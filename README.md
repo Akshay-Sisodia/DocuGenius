@@ -4,13 +4,13 @@ Welcome to the DocuGenius documentation. DocuGenius is an AI-powered documentati
 
 ## Documentation Sections
 
-1. [Project Overview](./project-overview.md)
-2. [Installation Guide](./installation-guide.md)
-3. [Configuration Guide](./configuration-guide.md)
-4. [API Reference](./api-reference.md)
-5. [Usage Guide](./usage-guide.md)
-6. [Integration Guide](./integration-guide.md)
-7. [Troubleshooting](./troubleshooting.md)
+1. [Project Overview](./docs/project-overview.md)
+2. [Installation Guide](./docs/installation-guide.md)
+3. [Configuration Guide](./docs/configuration-guide.md)
+4. [API Reference](./docs/api-reference.md)
+5. [Usage Guide](./docs/usage-guide.md)
+6. [Integration Guide](./docs/integration-guide.md)
+7. [Troubleshooting](./docs/troubleshooting.md)
 
 ## Quick Start
 
