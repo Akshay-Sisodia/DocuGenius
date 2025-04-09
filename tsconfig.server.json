@@ -1,25 +1,24 @@
 {
-  "extends": "./tsconfig.json",
   "compilerOptions": {
-    "module": "ESNext",
-    "outDir": "dist/server",
-    "noEmit": false,
-    "jsx": "react",
-    "moduleResolution": "node",
-    "allowJs": true,
-    "checkJs": true,
-    "sourceMap": true,
-    "declaration": true,
-    "removeComments": true,
-    "noUnusedLocals": true,
-    "noUnusedParameters": true,
-    "noImplicitReturns": true,
-    "noFallthroughCasesInSwitch": true,
     "target": "ES2020",
+    "module": "ESNext",
+    "moduleResolution": "node",
     "esModuleInterop": true,
-    "isolatedModules": true,
-    "skipLibCheck": true
+    "jsx": "preserve",
+    "strict": true,
+    "outDir": "dist",
+    "rootDir": "src",
+    "baseUrl": "src",
+    "paths": {
+      "@/*": ["./*"],
+      "@server/*": ["./server/*"]
+    },
+    "resolveJsonModule": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowJs": true,
+    "isolatedModules": true
   },
-  "include": ["src/server/**/*"],
-  "exclude": ["src/client", "node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
+  "include": ["src/server/**/*.ts", "src/server/**/*.js"],
+  "exclude": ["node_modules", "dist", "**/*.test.ts", "**/*.spec.ts"]
 } 

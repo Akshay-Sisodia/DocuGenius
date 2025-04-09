@@ -1,12 +1,12 @@
-# DocuGenius - AI Documentation Generator
+# DocuGenius - AI Documentation Generator MCP
 
-DocuGenius is a powerful tool that uses advanced AI to automatically generate comprehensive documentation from your code. It supports both GitHub repositories and individual code snippets, making it versatile for various documentation needs.
+DocuGenius is a powerful tool that uses advanced AI to automatically generate comprehensive documentation from your code. It's designed as a Machine Coding Protocol (MCP) server that integrates with development environments to provide documentation generation services.
 
 ## Features
 
 - **GitHub Repository Processing**: Generate documentation for entire GitHub repositories
 - **Code Snippet Documentation**: Document individual code snippets with support for multiple programming languages
-- **Modern Web Interface**: Built with Streamlit for a clean and intuitive user experience
+- **MCP Integration**: Easy integration with development environments like Cursor
 - **Markdown Output**: Generated documentation in markdown format for easy integration with existing documentation systems
 - **Multiple Language Support**: Supports documentation generation for:
   - JavaScript
@@ -38,14 +38,11 @@ DocuGenius requires an [OpenRouter API key](https://openrouter.ai/) to function.
 ```
 docugenius/
 ├── src/
-│   ├── client/         # Frontend client code
 │   └── server/         # Backend server implementation
 │       ├── routes/     # API route handlers
 │       ├── services/   # Business logic services
 │       ├── utils/      # Utility functions
 │       └── index.js    # Main server entry point
-├── ui.py              # Streamlit UI implementation
-├── requirements.txt   # Python dependencies
 ├── package.json       # Node.js dependencies
 └── .env.example       # Example environment configuration
 ```
@@ -54,28 +51,23 @@ docugenius/
 
 ### Option 1: Local Setup
 
-1. Install Python dependencies:
-```bash
-pip install -r requirements.txt
-```
-
-2. Install Node.js dependencies:
+1. Install Node.js dependencies:
 ```bash
 npm install
 ```
 
-3. Create your environment configuration:
+2. Create your environment configuration:
 ```bash
 cp .env.example .env
 ```
 
-4. Edit the `.env` file and add your OpenRouter API key:
+3. Edit the `.env` file and add your OpenRouter API key:
 ```
 OPENROUTER_API_KEY=your_openrouter_api_key_here
 OPENROUTER_MODEL=nvidia/llama-3.1-nemotron-nano-8b-v1:free
 ```
 
-### Option 2: Docker Setup (Backend Only)
+### Option 2: Docker Setup
 
 1. Make sure you have Docker and Docker Compose installed.
 
@@ -89,25 +81,19 @@ cp .env.example .env
 OPENROUTER_API_KEY=your_openrouter_api_key_here
 ```
 
-4. Build and run the backend using Docker Compose:
+4. Build and run using Docker Compose:
 ```bash
 docker-compose up -d
 ```
 
 5. The API will be available at http://localhost:3000/api.
 
-6. To use with the Streamlit UI, run it locally:
-```bash
-pip install -r requirements.txt
-streamlit run ui.py
-```
-
-7. To stop the Docker containers:
+6. To stop the Docker containers:
 ```bash
 docker-compose down
 ```
 
-8. To view logs:
+7. To view logs:
 ```bash
 docker-compose logs -f
 ```
@@ -158,40 +144,28 @@ You should see a success response.
 
 ## Usage
 
-1. Start the backend server:
+1. Start the MCP server:
 ```bash
 npm start
 ```
 
-2. Start the Streamlit UI:
-```bash
-streamlit run ui.py
-```
+2. The server will be available at http://localhost:3000
 
-3. Open your browser and navigate to the provided URL (typically http://localhost:8501)
+## Using with Cursor IDE
 
-## Using the Application
+To integrate DocuGenius with Cursor IDE:
 
-### GitHub Repository Documentation
-1. Select the "GitHub Repository" tab
-2. Enter the GitHub repository URL
-3. Click "Generate Documentation"
-4. Wait for the process to complete
-5. View or download the generated documentation
-
-### Code Snippet Documentation
-1. Select the "Code Snippet" tab
-2. Paste your code in the text area
-3. Select the programming language
-4. (Optional) Provide a file path
-5. Click "Generate Documentation"
-6. View or download the generated documentation
+1. Configure your Cursor to use this MCP server endpoint
+2. Use the documentation generation commands through Cursor's interface
+3. Access generated documentation directly in your development environment
 
 ## API Endpoints
 
 - `POST /api/process`: Process GitHub repositories
 - `POST /api/process-code`: Process code snippets
 - `GET /api/health`: API health check endpoint
+- `POST /mcp/docugenius/generate-documentation`: Generate documentation through MCP protocol
+- `POST /mcp/docugenius/generate-code-documentation`: Generate documentation for specific code through MCP protocol
 
 ## Troubleshooting
 
@@ -203,13 +177,13 @@ If you encounter API errors or "Invalid API response structure" errors:
 2. Check for rate limits - OpenRouter has usage limits for free accounts
 3. Try a different model by updating `OPENROUTER_MODEL` in your `.env`
 
-### Request Issues
+### MCP Integration Issues
 
-For detailed error information, check the logs in the `logs` directory:
-```bash
-cat ./logs/combined.log
-cat ./logs/error.log
-```
+If you encounter issues with MCP integration:
+
+1. Verify your MCP server is running and accessible
+2. Check your IDE's MCP configuration
+3. Ensure proper permissions for your MCP server
 
 ## Contributing
 
