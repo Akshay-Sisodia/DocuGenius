@@ -18,12 +18,13 @@ Generate documentation for a Git repository.
 |-----------|------|-------------|----------|
 | repoUrl | string | URL or path to the repository | Yes |
 | isLocal | boolean | Whether the repository is local | No (default: false) |
+| model | string | Model to use for documentation generation | No |
 
 #### Example Request
 
 ```json
 {
-  "repoUrl": "https://github.com/example/repo.git",
+  "repoUrl": "https://github.com/Akshay-Sisodia/DocuGenius.git",
   "isLocal": false
 }
 ```
@@ -34,7 +35,11 @@ Generate documentation for a Git repository.
 {
   "success": true,
   "documentation": "# Generated Documentation\n\n...",
-  "repoId": "example-repo-12345"
+  "repoId": "example-repo-12345",
+  "requestId": "uuid-v4",
+  "timing": {
+    "processedAt": "2023-04-09T16:30:00.000Z"
+  }
 }
 ```
 
@@ -83,29 +88,51 @@ Each file object should have:
 ```json
 {
   "success": true,
-  "documentation": "# Generated Documentation\n\n..."
+  "documentation": "# Generated Documentation\n\n...",
+  "requestId": "uuid-v4",
+  "timing": {
+    "processedAt": "2023-04-09T16:30:00.000Z"
+  }
 }
 ```
 
-### Check Status
+### Process Code
 
 ```
-GET /api/status/:repoId
+POST /api/process-code
 ```
 
-Check the status of a documentation generation request.
+Generate documentation for a single code snippet.
 
-#### Parameters
+#### Request Body
 
 | Parameter | Type | Description | Required |
 |-----------|------|-------------|----------|
-| repoId | string | ID of the repository | Yes |
+| code | string | Code to document | Yes |
+| language | string | Language of the code | Yes |
+| path | string | Path of the file | No |
+| context | object | Additional context | No |
+
+#### Example Request
+
+```json
+{
+  "code": "function hello() { return 'world'; }",
+  "language": "javascript",
+  "path": "main.js"
+}
+```
 
 #### Example Response
 
 ```json
 {
-  "status": "processing"
+  "success": true,
+  "documentation": "# Generated Documentation\n\n...",
+  "requestId": "uuid-v4",
+  "timing": {
+    "processedAt": "2023-04-09T16:30:00.000Z"
+  }
 }
 ```
 
@@ -121,7 +148,14 @@ Check the health status of the API.
 
 ```json
 {
-  "status": "healthy"
+  "status": "healthy",
+  "uptime": 3600,
+  "memory": {
+    "total": "1024MB",
+    "used": "512MB",
+    "free": "512MB"
+  },
+  "version": "1.0.0"
 }
 ```
 
@@ -130,6 +164,10 @@ Check the health status of the API.
 DocuGenius also exposes tools for the Model Context Protocol (MCP):
 
 ### Generate Documentation
+
+```
+mcp_docugenius_generate_documentation
+```
 
 Generates documentation for the provided content.
 
@@ -140,7 +178,19 @@ Generates documentation for the provided content.
 | content | array | Array of file objects | Yes |
 | context | object | Additional context | No |
 
+Each file object in the content array should contain:
+
+| Parameter | Type | Description | Required |
+|-----------|------|-------------|----------|
+| path | string | Path of the file | Yes |
+| content | string | Content of the file | Yes |
+| language | string | Language of the file | No |
+
 ### Generate Code Documentation
+
+```
+mcp_docugenius_generate_code_documentation
+```
 
 Generates documentation for specific code snippets.
 

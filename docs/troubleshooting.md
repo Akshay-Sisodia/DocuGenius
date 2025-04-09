@@ -1,101 +1,126 @@
 # Troubleshooting Guide
 
-This guide helps you diagnose and resolve common issues when working with DocuGenius.
-
 ## Common Issues and Solutions
 
-### Server Startup Issues
+### API Key Issues
 
-#### Issue: Server Won't Start
-- **Symptoms**: Error message when running `npm start` or `npm run dev`
-- **Possible Causes**:
-  - Missing dependencies
-  - Invalid environment variables
-  - Port already in use
-- **Solutions**:
-  1. Ensure all dependencies are installed: `npm install`
-  2. Check your `.env` file for missing or invalid values
-  3. Verify that the specified port is not in use by another application
-  4. Check logs in `./combined.log` and `./error.log` for detailed error messages
+**Issue**: Invalid API key or authorization errors.
 
-#### Issue: OpenRouter API Key Error
-- **Symptoms**: Error message about invalid or missing API key
-- **Solutions**:
-  1. Obtain a valid OpenRouter API key from [openrouter.ai](https://openrouter.ai)
-  2. Update your `.env` file with the correct API key
-  3. Verify that the API key is properly formatted with no extra spaces
+**Solution**:
+1. Verify your OpenRouter API key in the `.env` file
+2. Check the API key format (should not include "Bearer" prefix)
+3. Ensure your API key has not expired or reached its rate limit
+4. Try regenerating a new API key on OpenRouter
 
-### Repository Processing Issues
+### Repository Processing Errors
 
-#### Issue: Repository Cloning Fails
-- **Symptoms**: Error when processing a repository
-- **Possible Causes**:
-  - Invalid repository URL
-  - Network issues
-  - Git not installed
-- **Solutions**:
-  1. Verify that the repository URL is correct and accessible
-  2. Check your network connection
-  3. Ensure Git is installed and available in your PATH
+**Issue**: Repository cloning or processing fails.
 
-#### Issue: Processing Takes Too Long
-- **Symptoms**: Repository processing takes a long time or times out
-- **Solutions**:
-  1. Adjust `MAX_TOTAL_FILES` and `MAX_FILE_SIZE_KB` in your `.env` file
-  2. Process smaller repositories or specific directories
-  3. Use local repository processing for large repositories
+**Solution**:
+1. Ensure the repository URL is correct and accessible
+2. For private repositories, use an authentication token in the URL
+3. Check if Git is installed and properly configured
+4. Verify disk space for cloning repositories
+5. Check permissions for the temporary directory
 
-#### Issue: Poor Documentation Quality
-- **Symptoms**: Generated documentation is incomplete or low quality
-- **Solutions**:
-  1. Try a different OpenRouter model by updating `OPENROUTER_MODEL` in your `.env` file
-  2. Improve the organization and documentation within your code
-  3. Add more context to the API request when processing files
+### Model Errors
 
-### API Request Issues
+**Issue**: AI model returns errors or poor quality documentation.
 
-#### Issue: 400 Bad Request
-- **Symptoms**: API returns a 400 status code
-- **Solutions**:
-  1. Verify that the request body includes all required fields
-  2. Check the format of the request body
-  3. Ensure the repository URL is properly formatted
+**Solution**:
+1. Try a different model by updating `OPENROUTER_MODEL` in your `.env`
+2. Check if the model supports the language you're documenting
+3. Reduce the input size if it exceeds model limits
+4. Ensure proper formatting of the input data
 
-#### Issue: 500 Internal Server Error
-- **Symptoms**: API returns a 500 status code
-- **Solutions**:
-  1. Check the server logs for detailed error information
-  2. Verify that the OpenRouter API is working correctly
-  3. Check your server's memory and CPU usage
+### Server Connection Issues
 
-## Logging and Debugging
+**Issue**: Connection refused or timeout errors.
+
+**Solution**:
+1. Verify the server is running (`npm start`)
+2. Check if the port is available and not blocked by firewall
+3. Ensure Docker container is running if using Docker setup
+4. Check server logs for crash information
+
+### Memory Issues
+
+**Issue**: Out of memory errors when processing large repositories.
+
+**Solution**:
+1. Increase `MAX_HEAP_SIZE_MB` in your `.env` file
+2. Process smaller batches of files instead of entire repositories
+3. Optimize Docker container memory allocation
+4. Consider running on a machine with more RAM
+
+## Debugging
 
 ### Enabling Debug Logs
-For more detailed logging, update your `.env` file:
-```
-LOG_LEVEL=debug
+
+To enable more detailed logging, set the `LOG_LEVEL` environment variable to `debug`:
+
+```bash
+LOG_LEVEL=debug npm start
 ```
 
 ### Checking Logs
-Review the log files for detailed error information:
+
+Logs are stored in the `logs` directory. For detailed error information, check:
+
 ```bash
-# View combined logs
-cat ./combined.log
-
-# View error logs
-cat ./error.log
-
-# Monitor logs in real-time
-tail -f ./combined.log
+cat logs/error.log
 ```
+
+For all application logs:
+
+```bash
+cat logs/combined.log
+```
+
+### Performance Logging
+
+To analyze performance bottlenecks, enable performance logging:
+
+```bash
+ENABLE_PERF_LOGGING=true npm start
+```
+
+Performance logs will be available in `logs/performance.log`.
+
+## Common Error Messages
+
+### "Invalid API response structure"
+
+This error typically occurs when:
+1. The OpenRouter API key is invalid or expired
+2. The API service is experiencing downtime
+3. The request payload is improperly formatted
+
+Solution: Verify your API key and try again after a few minutes.
+
+### "Failed to clone repository"
+
+This error occurs when:
+1. The repository URL is incorrect
+2. Authentication credentials are missing for private repositories
+3. Git is not installed or properly configured
+
+Solution: Check the repository URL and ensure Git is properly installed.
+
+### "Request timeout"
+
+This error occurs when:
+1. The request takes too long to process
+2. The repository is too large
+3. The API service is overloaded
+
+Solution: Try processing smaller repositories or individual files.
 
 ## Getting Support
 
-If you're unable to resolve an issue using this guide:
+If you continue to experience issues:
 
-1. Check the GitHub repository issues for similar problems
-2. Submit a detailed bug report including:
-   - Error messages
-   - Steps to reproduce
-   - Environment information (Node.js version, OS, etc.)
-   - Log snippets 
+1. Check the project's [GitHub issues](https://github.com/Akshay-Sisodia/DocuGenius/issues) for similar problems
+2. Create a new issue with detailed information about the error
+3. Include relevant log files and error messages
+4. Specify your environment (OS, Node.js version, etc.) 
